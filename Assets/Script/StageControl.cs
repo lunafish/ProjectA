@@ -27,6 +27,9 @@ public class StageControl : MonoBehaviour {
 	public GameObject _playagain;
 	public GameObject _start;
 
+	// Black Out
+	public GameObject _blackout;
+
 	//Audio
 	public AudioClip _game_run_es;
 	public AudioClip _game_over_es;
@@ -60,6 +63,9 @@ public class StageControl : MonoBehaviour {
 
 		_txt_flew.gameObject.SetActive(false);
 		_txt_collected_coin.gameObject.SetActive(false);
+
+		//Black Out
+		_blackout.SetActive(false);
 
 		//Audio
 		audio.clip = _game_run_es;
@@ -177,6 +183,9 @@ public class StageControl : MonoBehaviour {
 
 		_txt_flew.gameObject.SetActive(true);
 		_txt_collected_coin.gameObject.SetActive(true);
+
+		//Black Out
+		_blackout.SetActive(true);
 
 		// Clear Coin
 		ClearCoin(_back);
