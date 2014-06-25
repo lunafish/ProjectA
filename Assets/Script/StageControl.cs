@@ -10,36 +10,60 @@ public class StageControl : MonoBehaviour {
 	public float _speed = -0.1f;
 	private float _sum = 0.0f;
 
+	public WallController _wallCtrl;
+
+	//text
 	public tk2dTextMesh _txt_score;
 	private float _score;
 
 	public tk2dTextMesh _txt_coin;
 	private int _coin;
 
-	public GameObject _gameover;
+	public tk2dTextMesh _txt_flew;
+	public tk2dTextMesh _txt_collected_coin;
+
+	// tk2d Button
+	public GameObject _gameover;  //text mesh : game over 
 	public GameObject _playagain;
 	public GameObject _start;
 
+	//Audio
+	public AudioClip _game_run_es;
+	public AudioClip _game_over_es;
 
 	// Use this for initialization
 	void Start () {
 
 		_speed = 0.0f;
+		_wallCtrl.WallScrollSpeed = 0.0f;
+
+		//Audio
+		audio.clip = _game_run_es;
+		audio.Play();
+
 	}
 
 	void Init()
 	{
 		_speed = -0.1f;
+		_wallCtrl.WallScrollSpeed = 0.001f;
 
 		_score = 0;
-		_txt_score.text = _score + "M";
+		_txt_score.text = _score + "m";
 		
 		_coin = 0;
-		_txt_coin.text = _coin + "COIN";
+		_txt_coin.text = _coin + "coin";
 
 		_gameover.SetActive(false);
 		_playagain.SetActive(false);
 		_start.SetActive(false);
+
+		_txt_flew.gameObject.SetActive(false);
+		_txt_collected_coin.gameObject.SetActive(false);
+
+		//Audio
+		audio.clip = _game_run_es;
+		audio.Play();
 	}
 	
 	// Update is called once per frame
@@ -128,28 +152,44 @@ public class StageControl : MonoBehaviour {
 	void UpdateScore( float speed )
 	{
 		_score+=speed;
-		_txt_score.text = (int)Mathf.Abs(_score) + "M";
+		_txt_score.text = (int)Mathf.Abs(_score) + "m";
 	}
 
 	public void UpdateCoin( )
 	{
 		_coin++;
-		_txt_coin.text = _coin + "COIN";
+		_txt_coin.text = _coin + "coin";
 	}
 
 	public void GameOver( )
 	{
+		//speed
 		_speed = 0.0f;
+		_wallCtrl.WallScrollSpeed = 0.0f;
+
+		//text button
 		_gameover.SetActive(true);
 		_playagain.SetActive(true);
 
+		//text
+		_txt_flew.text = _txt_score.text;
+		_txt_collected_coin.text = _txt_coin.text;
+
+		_txt_flew.gameObject.SetActive(true);
+		_txt_collected_coin.gameObject.SetActive(true);
+
+		// Clear Coin
 		ClearCoin(_back);
 		ClearCoin(_center);
 		ClearCoin(_front);
-
+		// Clear Mon_p
 		ClearMon(_back);
 		ClearMon(_center);
 		ClearMon(_front);
+
+		//Audio
+		audio.clip = _game_over_es;
+		audio.Play();
 	}
 
 	void PlayAgain( )
