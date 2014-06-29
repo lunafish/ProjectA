@@ -25,6 +25,10 @@ MonoBehaviour:
     dataGUID: 
     managed: 0
     loadable: 0
+  - assetGUID: 0dba7f683083b4483a4f225b38e1e3de
+    dataGUID: 
+    managed: 0
+    loadable: 0
   fontIndex:
   - assetGUID: 063b15d80dbb4604d890600a64c79cf8
     dataGUID: e7a6b09a73c6b2b4f8060096ddbd3b5e
@@ -688,6 +692,22 @@ MonoBehaviour:
     - 1394935354
     - 1394935349
     - 1394935345
+    managedSpriteCollection: 0
+    loadable: 0
+    assetName: 
+    version: 3
+  - name: HurdleCollection
+    spriteCollectionGUID: eed6bf6fef7f9497c851476f1409a287
+    spriteCollectionDataGUID: e1fb18cdd9c734b5989255de4cfc24e7
+    spriteNames:
+    - bolt_1
+    - bolt_2
+    spriteTextureGUIDs:
+    - 073260fdb89444f28af5f412641241dc
+    - b184b13546fb549029a1044ce6ccb48c
+    spriteTextureTimeStamps:
+    - 1404066924
+    - 1404066941
     managedSpriteCollection: 0
     loadable: 0
     assetName: 

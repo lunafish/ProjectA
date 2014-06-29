@@ -11,6 +11,8 @@ public class StageControl : MonoBehaviour {
 	private float _sum = 0.0f;
 
 	public WallController _wallCtrl;
+	// JumpPower, Jump Animation
+	public CorgiControl _corgiCtrl;
 
 	//text
 	public tk2dTextMesh _txt_score;
@@ -23,9 +25,9 @@ public class StageControl : MonoBehaviour {
 	public tk2dTextMesh _txt_collected_coin;
 
 	// tk2d Button
-	public GameObject _gameover;  //text mesh : game over 
-	public GameObject _playagain;
-	public GameObject _start;
+	public GameObject _gameoverBtn;  //text mesh : game over 
+	public GameObject _playagainBtn;
+	public GameObject _startBtn;
 
 	// Black Out
 	public GameObject _blackout;
@@ -40,10 +42,15 @@ public class StageControl : MonoBehaviour {
 		_speed = 0.0f;
 		_wallCtrl.WallScrollSpeed = 0.0f;
 
+		// JumpPower
+		_corgiCtrl._JumpPower = 0;
+		// Jump Animation
+//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", false);
+//		_corgiCtrl._corgi.STATE = "STAY";
+
 		//Audio
 		audio.clip = _game_run_es;
 		audio.Play();
-
 	}
 
 	void Init()
@@ -51,15 +58,20 @@ public class StageControl : MonoBehaviour {
 		_speed = -0.1f;
 		_wallCtrl.WallScrollSpeed = 0.001f;
 
+		// JumpPower
+		_corgiCtrl._JumpPower = 250.0f;
+		// Jump Animation
+//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", true);
+
 		_score = 0;
 		_txt_score.text = _score + "m";
 		
 		_coin = 0;
 		_txt_coin.text = _coin + "coin";
 
-		_gameover.SetActive(false);
-		_playagain.SetActive(false);
-		_start.SetActive(false);
+		_gameoverBtn.SetActive(false);
+		_playagainBtn.SetActive(false);
+		_startBtn.SetActive(false);
 
 		_txt_flew.gameObject.SetActive(false);
 		_txt_collected_coin.gameObject.SetActive(false);
@@ -98,7 +110,7 @@ public class StageControl : MonoBehaviour {
 			//Clear Mon
 			ClearMon(tmp);
 			//Monster Create
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < Random.Range(1, 2); i++)
 				CreateMon(tmp);
 
 			//Clear Coin
@@ -106,10 +118,17 @@ public class StageControl : MonoBehaviour {
 			//Coin Create
 			for(int i = 0; i < 10; i++)
 				CreateCoin(tmp);
+
+			//Clear Hurdle
+			ClearHurdle(tmp);
+			//Hurdle Create
+			for(int i = 0; i < 1; i++)
+				CreateHurdle(tmp);
 		}
 		UpdateScore(_speed);
 	}
 
+	//Mon_p
 	void ClearMon(GameObject stage){
 		Transform[] allChildren = stage.GetComponentsInChildren<Transform>();
 		foreach (Transform child in allChildren) {
@@ -132,6 +151,32 @@ public class StageControl : MonoBehaviour {
 		mon.transform.position = pos;
 	}
 
+	//Hurdle
+	void ClearHurdle(GameObject stage){
+		Transform[] allChildren = stage.GetComponentsInChildren<Transform>();
+		foreach (Transform child in allChildren) {
+			// do whatever with child transform here
+			if(child.gameObject.tag == "Hurdle_tag")
+			{
+				Destroy( child.gameObject );
+			}
+		}
+	}
+	
+	void CreateHurdle(GameObject stage){
+		GameObject hurdle = (Instantiate(Resources.Load<GameObject>("hurdle")) as GameObject);
+		hurdle.transform.parent = stage.transform;
+		
+		Vector3 pos = stage.transform.position;
+		pos.z = -1;
+		pos.x += Random.Range(-4.0f, 4.0f);
+		pos.y += Random.Range(2.0f, 3.1f);
+		
+		hurdle.transform.position = pos;
+
+	}
+
+	//Coin
 	void ClearCoin(GameObject stage){
 		Transform[] allChildren = stage.GetComponentsInChildren<Transform>();
 		foreach (Transform child in allChildren) {
@@ -155,6 +200,7 @@ public class StageControl : MonoBehaviour {
 		coin.transform.position = pos;
 	}
 
+	//Score
 	void UpdateScore( float speed )
 	{
 		_score+=speed;
@@ -173,9 +219,15 @@ public class StageControl : MonoBehaviour {
 		_speed = 0.0f;
 		_wallCtrl.WallScrollSpeed = 0.0f;
 
+		// JumpPower
+		_corgiCtrl._JumpPower = 0;
+		// Jump Animation
+//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", false);
+//		_corgiCtrl._corgi.STATE = "STAY";
+
 		//text button
-		_gameover.SetActive(true);
-		_playagain.SetActive(true);
+		_gameoverBtn.SetActive(true);
+		_playagainBtn.SetActive(true);
 
 		//text
 		_txt_flew.text = _txt_score.text;
@@ -195,6 +247,10 @@ public class StageControl : MonoBehaviour {
 		ClearMon(_back);
 		ClearMon(_center);
 		ClearMon(_front);
+		// Clear Hurdle
+		ClearHurdle(_back);
+		ClearHurdle(_center);
+		ClearHurdle(_front);
 
 		//Audio
 		audio.clip = _game_over_es;
@@ -204,17 +260,7 @@ public class StageControl : MonoBehaviour {
 	void PlayAgain( )
 	{
 		Debug.Log("Play Again!!");
-		/*
-		_gameover.SetActive(false);
-		_playagain.SetActive(false);
 
-		_speed = -0.1f;
-
-		_score = 0;
-		_txt_score.text = _score + "M";
-		_coin = 0;
-		_txt_coin.text = _coin + "COIN";
-		*/
 		Init();
 	}
 

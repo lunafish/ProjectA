@@ -5,19 +5,23 @@ public class CorgiControl : MonoBehaviour {
 
 	public CorgiCollision _corgi;
 
-	public float _JumpPower = 200.0f;
+	public float _JumpPower = 150.0f;
 
 	// Use this for initialization
 	void Start () {
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.Space) && _corgi.STATE == "RUN") {
-			_corgi.rigidbody.AddForce(0,_JumpPower,0);
+		//if(Input.GetKeyDown(KeyCode.Space) && _corgi.STATE == "RUN" ) {
+		if(Input.GetKeyDown(KeyCode.Space) && (_corgi.STATE == "RUN" || _corgi.STATE =="JUMP") ) {
+			//_corgi.rigidbody.AddForce(0,_JumpPower,0);
+			_corgi.rigidbody.velocity = new Vector3(0, 5, 0);
 			_corgi.GetComponent<Animator>().SetBool("jump", true);
 			_corgi.STATE = "JUMP";
-		}
+
+		}//if
 		/*
 		if(Input.GetKeyDown(KeyCode.Space)
 		   && _corgi.STATE=="RUN")
@@ -43,5 +47,5 @@ public class CorgiControl : MonoBehaviour {
 			//player_collision_script.STATE="JUMP2";
 		}
 		*/
-	}
+	}//Update
 }
