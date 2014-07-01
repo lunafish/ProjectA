@@ -702,12 +702,24 @@ MonoBehaviour:
     spriteNames:
     - bolt_1
     - bolt_2
+    - crash02
+    - crash01
+    - crash_star01
+    - crash_star02
     spriteTextureGUIDs:
     - 073260fdb89444f28af5f412641241dc
     - b184b13546fb549029a1044ce6ccb48c
+    - 3fc0245af56d446e1b9478a17fdef6b0
+    - daeca4e0755ec4d4c831b42b6464bb8c
+    - 52f0749cffea34ef78705910f53276fd
+    - ae28158382afb4ecfa32c07e324cb1ce
     spriteTextureTimeStamps:
-    - 1404066924
-    - 1404066941
+    - 1404122652
+    - 1404122652
+    - 1404173994
+    - 1404173982
+    - 1404176419
+    - 1404176430
     managedSpriteCollection: 0
     loadable: 0
     assetName: 

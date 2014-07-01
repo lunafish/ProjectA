@@ -12,17 +12,23 @@ public class CorgiCollision : MonoBehaviour {
 
 	public GameObject _rocket;
 
-	// particle Rocket
+	// Particle Rocket
 	public GameObject _rocket_fire_prefab; // 불꽃이 될 프래팹을 연결해 줄곳
 	Vector3 position; // 위치변수 
 	Quaternion rotation; // 각도변수 
 	GameObject fire_controller; // 생성된 불꽃과 연결할 곳
 
-	// particle Mon_p
-	public GameObject _mon_p_fire_prefab;
+	// Particle Mon_p
+	public GameObject _crash_fire_prefab;
 	Vector3 position_mon_p; // 위치변수 
 	Quaternion rotation_mon_p; // 각도변수 
 	GameObject fire_controller_mon_p; // 생성된 불꽃과 연결할 곳
+
+	// Particle Coin
+	public GameObject _coin_fire_prefab;
+	Vector3 position_coin; // 위치변수 
+	Quaternion rotation_coin; // 각도변수 
+	GameObject fire_controller_coin; // 생성된 불꽃과 연결할 곳
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +38,7 @@ public class CorgiCollision : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		// particle Rocket
+		// Particle Rocket
 		if(Input.GetKeyDown(KeyCode.Space)){
 			position = _rocket.transform.position + new Vector3(-0.5f, 0.0f, 0.0f); // 위치셋팅
 			rotation = Quaternion.identity; // 각도셋팅
@@ -49,11 +55,11 @@ public class CorgiCollision : MonoBehaviour {
 		//this.transform.Translate (0.02f, 0, 0);
 		if(other.gameObject.tag == "Mon_p_tag")
 		{
-			// particle
+			// Particle
 			position = other.transform.position; // 위치셋팅
 			rotation = Quaternion.identity; // 각도셋팅
 			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
-			fire_controller = Instantiate( _mon_p_fire_prefab, position, rotation ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+			fire_controller = Instantiate( _crash_fire_prefab, position, rotation ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
 			
 			//Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 		}
@@ -64,39 +70,48 @@ public class CorgiCollision : MonoBehaviour {
 		//Debug.Log(other.gameObject.tag);
 		if(other.gameObject.tag == "Mon_p_tag") {
 
-			// particle Mon_p
-			position_mon_p = other.transform.position; // 위치셋팅
+			// Particle Mon_p
+			position_mon_p = other.transform.position + new Vector3(0.0f, 0.1f, -0.2f); // 위치셋팅 position = _rocket.transform.position + new Vector3(-0.5f, 0.0f, 0.0f);
 			rotation_mon_p = Quaternion.identity; // 각도셋팅
 			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
-			fire_controller_mon_p = Instantiate( _mon_p_fire_prefab, position_mon_p, rotation_mon_p ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+			fire_controller_mon_p = Instantiate( _crash_fire_prefab, position_mon_p, rotation_mon_p ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+			//fire_controller_mon_p.transform.parent = transform;
 
 			//Audio
 			audio.clip = _mon_p_es;
 			audio.Play();
 
 			//Destroy Mon
-			Destroy(other.gameObject);
+//			Destroy(other.gameObject);
 			_stageCtrl.GameOver();
 		}
 
 		if(other.gameObject.tag == "Hurdle_tag") {
-			/*
-			// particle Hurdle
-			position_mon_p = other.transform.position; // 위치셋팅
+
+			// Particle Hurdle
+			position_mon_p = other.transform.position + new Vector3(0.0f, 0.0f, -0.2f); // 위치셋팅
 			rotation_mon_p = Quaternion.identity; // 각도셋팅
 			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
-			fire_controller_mon_p = Instantiate( _mon_p_fire_prefab, position_mon_p, rotation_mon_p ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
-			*/
+			fire_controller_mon_p = Instantiate( _crash_fire_prefab, position_mon_p, rotation_mon_p ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+			//fire_controller_mon_p.transform.parent = transform;
+
 			//Audio
 			audio.clip = _mon_p_es;
 			audio.Play();
 			
 			//Destroy Mon
-			Destroy(other.gameObject);
+//			Destroy(other.gameObject);
 			_stageCtrl.GameOver();
 		}
 
 		if(other.gameObject.tag == "Coin_tag") {
+
+			// Particle Hurdle
+			position_coin= other.transform.position; // 위치셋팅
+			rotation_coin = Quaternion.identity; // 각도셋팅
+			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
+			fire_controller_coin = Instantiate( _coin_fire_prefab, position_coin, rotation_coin ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+
 			//Audio
 			audio.clip = _coin_es;
 			audio.Play();

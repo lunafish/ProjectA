@@ -59,7 +59,7 @@ public class StageControl : MonoBehaviour {
 		_wallCtrl.WallScrollSpeed = 0.001f;
 
 		// JumpPower
-		_corgiCtrl._JumpPower = 250.0f;
+		_corgiCtrl._JumpPower = 150.0f;
 		// Jump Animation
 //		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", true);
 
@@ -110,7 +110,7 @@ public class StageControl : MonoBehaviour {
 			//Clear Mon
 			ClearMon(tmp);
 			//Monster Create
-			for(int i = 0; i < Random.Range(1, 2); i++)
+			for(int i = 0; i < Random.Range(0, 2); i++)
 				CreateMon(tmp);
 
 			//Clear Coin
@@ -170,7 +170,7 @@ public class StageControl : MonoBehaviour {
 		Vector3 pos = stage.transform.position;
 		pos.z = -1;
 		pos.x += Random.Range(-4.0f, 4.0f);
-		pos.y += Random.Range(2.0f, 3.1f);
+		pos.y += Random.Range(2.2f, 3.1f);
 		
 		hurdle.transform.position = pos;
 
@@ -213,7 +213,7 @@ public class StageControl : MonoBehaviour {
 		_txt_coin.text = _coin + "coin";
 	}
 
-	public void GameOver( )
+	public void GameOver( )	
 	{
 		//speed
 		_speed = 0.0f;
@@ -225,13 +225,15 @@ public class StageControl : MonoBehaviour {
 //		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", false);
 //		_corgiCtrl._corgi.STATE = "STAY";
 
+		StartCoroutine("DelayAni");
+		/*
 		//text button
 		_gameoverBtn.SetActive(true);
 		_playagainBtn.SetActive(true);
 
 		//text
-		_txt_flew.text = _txt_score.text;
-		_txt_collected_coin.text = _txt_coin.text;
+		_txt_flew.text = "you flew: " + _txt_score.text;
+		_txt_collected_coin.text = "and collected: " + _txt_coin.text;
 
 		_txt_flew.gameObject.SetActive(true);
 		_txt_collected_coin.gameObject.SetActive(true);
@@ -252,6 +254,43 @@ public class StageControl : MonoBehaviour {
 		ClearHurdle(_center);
 		ClearHurdle(_front);
 
+		//Audio
+		audio.clip = _game_over_es;
+		audio.Play();
+		*/
+	}
+
+	IEnumerator DelayAni()
+	{
+		yield return new WaitForSeconds(2.5f);
+
+		//text button
+		_gameoverBtn.SetActive(true);
+		_playagainBtn.SetActive(true);
+		
+		//text
+		_txt_flew.text = "you flew: " + _txt_score.text;
+		_txt_collected_coin.text = "and collected: " + _txt_coin.text;
+		
+		_txt_flew.gameObject.SetActive(true);
+		_txt_collected_coin.gameObject.SetActive(true);
+		
+		//Black Out
+		_blackout.SetActive(true);
+		
+		// Clear Coin
+		ClearCoin(_back);
+		ClearCoin(_center);
+		ClearCoin(_front);
+		// Clear Mon_p
+		ClearMon(_back);
+		ClearMon(_center);
+		ClearMon(_front);
+		// Clear Hurdle
+		ClearHurdle(_back);
+		ClearHurdle(_center);
+		ClearHurdle(_front);
+		
 		//Audio
 		audio.clip = _game_over_es;
 		audio.Play();
