@@ -18,11 +18,11 @@ public class CorgiCollision : MonoBehaviour {
 	Quaternion rotation; // 각도변수 
 	GameObject fire_controller; // 생성된 불꽃과 연결할 곳
 
-	// Particle Mon_p
+	// Particle Crash //Mon_p, Hurdle
 	public GameObject _crash_fire_prefab;
-	Vector3 position_mon_p; // 위치변수 
-	Quaternion rotation_mon_p; // 각도변수 
-	GameObject fire_controller_mon_p; // 생성된 불꽃과 연결할 곳
+	Vector3 position_crash; // 위치변수 
+	Quaternion rotation_crash; // 각도변수 
+	GameObject fire_controller_crash; // 생성된 불꽃과 연결할 곳
 
 	// Particle Coin
 	public GameObject _coin_fire_prefab;
@@ -45,7 +45,7 @@ public class CorgiCollision : MonoBehaviour {
 			//rotation = Quaternion.Euler(0,0,90); // 각도셋팅
 			//rotation = Quaternion.Euler(0,180,0);
 			fire_controller = Instantiate( _rocket_fire_prefab, position, rotation ) as GameObject;
-			fire_controller.transform.parent = _rocket.transform;
+//			fire_controller.transform.parent = _rocket.transform;
 		}
 	
 	}
@@ -71,11 +71,11 @@ public class CorgiCollision : MonoBehaviour {
 		if(other.gameObject.tag == "Mon_p_tag") {
 
 			// Particle Mon_p
-			position_mon_p = other.transform.position + new Vector3(0.0f, 0.1f, -0.2f); // 위치셋팅 position = _rocket.transform.position + new Vector3(-0.5f, 0.0f, 0.0f);
-			rotation_mon_p = Quaternion.identity; // 각도셋팅
+			position_crash = other.transform.position + new Vector3(0.0f, 0.1f, -0.2f); // 위치셋팅 position = _rocket.transform.position + new Vector3(-0.5f, 0.0f, 0.0f);
+			rotation_crash = Quaternion.identity; // 각도셋팅
 			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
-			fire_controller_mon_p = Instantiate( _crash_fire_prefab, position_mon_p, rotation_mon_p ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
-			//fire_controller_mon_p.transform.parent = transform;
+			fire_controller_crash = Instantiate( _crash_fire_prefab, position_crash, rotation_crash ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+//			fire_controller_mon_p.transform.parent = transform;
 
 			//Audio
 			audio.clip = _mon_p_es;
@@ -89,11 +89,11 @@ public class CorgiCollision : MonoBehaviour {
 		if(other.gameObject.tag == "Hurdle_tag") {
 
 			// Particle Hurdle
-			position_mon_p = other.transform.position + new Vector3(0.0f, 0.0f, -0.2f); // 위치셋팅
-			rotation_mon_p = Quaternion.identity; // 각도셋팅
+			position_crash = other.transform.position + new Vector3(0.0f, 0.0f, -0.2f); // 위치셋팅
+			rotation_crash = Quaternion.identity; // 각도셋팅
 			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
-			fire_controller_mon_p = Instantiate( _crash_fire_prefab, position_mon_p, rotation_mon_p ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
-			//fire_controller_mon_p.transform.parent = transform;
+			fire_controller_crash = Instantiate( _crash_fire_prefab, position_crash, rotation_crash ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+//			fire_controller_crash.transform.parent = transform;
 
 			//Audio
 			audio.clip = _mon_p_es;
@@ -123,7 +123,9 @@ public class CorgiCollision : MonoBehaviour {
 
 		GetComponent<Animator>().SetBool("jump", false);
 
-		STATE = "RUN";
+		if(STATE != "CRASH" && STATE != "STAY")
+			STATE = "RUN";
 
-	}
+
+	}//OnCollisionEnter
 }

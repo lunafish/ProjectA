@@ -5,7 +5,8 @@ public class CorgiControl : MonoBehaviour {
 
 	public CorgiCollision _corgi;
 
-	public float _JumpPower = 150.0f;
+//	public float _JumpPower = 150.0f;
+	public float _JumpPower = 5.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -14,10 +15,13 @@ public class CorgiControl : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		Debug.Log(_corgi.STATE);
+
+
 		//if(Input.GetKeyDown(KeyCode.Space) && _corgi.STATE == "RUN" ) {
 		if(Input.GetKeyDown(KeyCode.Space) && (_corgi.STATE == "RUN" || _corgi.STATE =="JUMP") ) {
 			//_corgi.rigidbody.AddForce(0,_JumpPower,0);
-			_corgi.rigidbody.velocity = new Vector3(0, 5, 0);
+			_corgi.rigidbody.velocity = new Vector3(0, _JumpPower, 0);
 			_corgi.GetComponent<Animator>().SetBool("jump", true);
 			_corgi.STATE = "JUMP";
 
