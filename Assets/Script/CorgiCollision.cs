@@ -7,10 +7,13 @@ public class CorgiCollision : MonoBehaviour {
 
 	public StageControl _stageCtrl;
 
+	public CorgiControl _corgiCtrl;
+
 	public AudioClip _coin_es;
 	public AudioClip _mon_p_es;
 
 	public GameObject _rocket;
+	public GameObject _buster;
 
 	// Particle Rocket
 	public GameObject _rocket_fire_prefab; // 불꽃이 될 프래팹을 연결해 줄곳
@@ -81,6 +84,13 @@ public class CorgiCollision : MonoBehaviour {
 			audio.clip = _mon_p_es;
 			audio.Play();
 
+			//Minus Life
+			_stageCtrl._plusLife--;			// *
+			Debug.Log("_stageCtrl._plusLife : " + _stageCtrl._plusLife);
+
+			// buster false
+			_corgiCtrl.ChangeBuster( false );
+
 			//Destroy Mon
 //			Destroy(other.gameObject);
 			_stageCtrl.GameOver();
@@ -98,7 +108,11 @@ public class CorgiCollision : MonoBehaviour {
 			//Audio
 			audio.clip = _mon_p_es;
 			audio.Play();
-			
+
+			//Minus Life
+			_stageCtrl._plusLife--;			// *
+			Debug.Log("_stageCtrl._plusLife : " + _stageCtrl._plusLife);
+
 			//Destroy Mon
 //			Destroy(other.gameObject);
 			_stageCtrl.GameOver();
@@ -106,11 +120,15 @@ public class CorgiCollision : MonoBehaviour {
 
 		if(other.gameObject.tag == "Coin_tag") {
 
-			// Particle Hurdle
+			// Particle Coin
 			position_coin= other.transform.position; // 위치셋팅
 			rotation_coin = Quaternion.identity; // 각도셋팅
 			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
 			fire_controller_coin = Instantiate( _coin_fire_prefab, position_coin, rotation_coin ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+
+			// OverlapSphere Coin
+//			float ItemRadius = 5.0f;
+//			Collider3D[] items = Physics2D.OverlapCircleAll(transform.position, ItemRadius, 1 << LayerMask.NameToLayer("Coin_tag"));
 
 			//Audio
 			audio.clip = _coin_es;
@@ -119,6 +137,26 @@ public class CorgiCollision : MonoBehaviour {
 			//Destroy Coin
 			Destroy(other.gameObject);
 			_stageCtrl.UpdateCoin();
+		}
+
+		if(other.gameObject.tag == "Power_tag") {
+			
+			// Particle Coin
+			position_coin= other.transform.position; // 위치셋팅
+			rotation_coin = Quaternion.identity; // 각도셋팅
+			//rotation = Quaternion.Euler(-90,0,0); // 각도셋팅
+			fire_controller_coin = Instantiate( _coin_fire_prefab, position_coin, rotation_coin ) as GameObject; //Instantiate( 프리팹, 위치, 각도 );
+
+			//Audio
+			audio.clip = _coin_es;
+			audio.Play();
+			
+			//Destroy Coin
+			Destroy(other.gameObject);
+			_stageCtrl.PlusLife();
+
+			// buster
+			_corgiCtrl.ChangeBuster( true );
 		}
 
 		GetComponent<Animator>().SetBool("jump", false);

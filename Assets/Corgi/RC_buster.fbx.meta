@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: acb9b211073574c55a70aae94f061105
+guid: 7aaca27e5653148a4bf2d6028eef2806
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
@@ -18,8 +18,9 @@ ModelImporter:
     100024: Camera
     100026: corgi
     100028: Cylinder
-    100030: Lamp
-    100032: //RootNode
+    100030: Cylinder_002
+    100032: Lamp
+    100034: //RootNode
     400000: Armature
     400002: Bone
     400004: Bone_001
@@ -35,15 +36,18 @@ ModelImporter:
     400024: Camera
     400026: corgi
     400028: Cylinder
-    400030: Lamp
-    400032: //RootNode
-    4300000: Cylinder
-    4300002: corgi
+    400030: Cylinder_002
+    400032: Lamp
+    400034: //RootNode
+    4300000: Cylinder_002
+    4300002: Cylinder
+    4300004: corgi
     7400000: Default Take
     7400002: ArmatureAction
     9500000: //RootNode
     13700000: corgi
     13700002: Cylinder
+    13700004: Cylinder_002
   materials:
     importMaterials: 1
     materialName: 0

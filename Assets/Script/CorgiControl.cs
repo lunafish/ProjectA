@@ -3,6 +3,9 @@ using System.Collections;
 
 public class CorgiControl : MonoBehaviour {
 
+	public GameObject _corgi_normal;
+	public GameObject _corgi_buster;
+
 	public CorgiCollision _corgi;
 
 //	public float _JumpPower = 150.0f;
@@ -10,12 +13,29 @@ public class CorgiControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// get default collision
+		_corgi = _corgi_normal.GetComponent<CorgiCollision>();
+	}
+
+	public void ChangeBuster( bool isBuster ) {
+		// isBuster : true : buster mode
+		// isBUster : false : normal mode
+
+		if(isBuster == true ) {
+			_corgi = _corgi_buster.GetComponent<CorgiCollision>();
+			_corgi_buster.SetActive(true);
+			_corgi_normal.SetActive(false);
+		} else {
+			_corgi = _corgi_normal.GetComponent<CorgiCollision>();
+			_corgi_buster.SetActive(false);
+			_corgi_normal.SetActive(true);
+		}
 
 	}
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log(_corgi.STATE);
+//		Debug.Log(_corgi.STATE);
 
 
 		//if(Input.GetKeyDown(KeyCode.Space) && _corgi.STATE == "RUN" ) {

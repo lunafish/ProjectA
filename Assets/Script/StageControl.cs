@@ -18,6 +18,12 @@ public class StageControl : MonoBehaviour {
 	public GameObject[] _coinBundles;
 	public int _currentCoinBundle = 0;
 
+	// Power Array
+	public GameObject[] _powerAry;		// *
+	public int _currentPowerNum = 0;
+
+	// Plus Life
+	public int _plusLife = 0;			// *
 
 	//text
 	public tk2dTextMesh _txt_score;
@@ -85,6 +91,9 @@ public class StageControl : MonoBehaviour {
 		//Init Coin Bundle Index 
 		_currentCoinBundle = 0;
 
+		//Init Power Item Index
+		_currentPowerNum = 0;		// *
+
 		// JumpPower
 //		_corgiCtrl._JumpPower = 150.0f;
 		_corgiCtrl._JumpPower = 5.0f;
@@ -148,6 +157,7 @@ public class StageControl : MonoBehaviour {
 			//Create Monster
 			for(int i = 0; i < Random.Range(0, 2); i++)
 				CreateMon(tmp);
+
 			//Clear Coin
 			ClearCoin(tmp);
 			CreateCoinBundle(tmp);
@@ -156,6 +166,11 @@ public class StageControl : MonoBehaviour {
 			for(int i = 0; i < 10; i++)
 				CreateCoin(tmp);
 			*/
+
+			//Power
+			ClearPower(tmp);
+			CreatePowerAry(tmp);
+
 			//Clear Hurdle
 			ClearHurdle(tmp);
 			//Create Hurdle
@@ -165,6 +180,70 @@ public class StageControl : MonoBehaviour {
 
 		//
 		UpdateScore(_speed);
+	}
+	
+	//Power Item
+	void ClearPower(GameObject stage){
+		Transform[] allChildren = stage.GetComponentsInChildren<Transform>();
+		foreach (Transform child in allChildren) {
+			// do whatever with child transform here
+			if(child.gameObject.tag == "Power_tag")
+			{
+				Destroy( child.gameObject );
+			}
+		}
+	}
+	
+	void CreatePower(GameObject stage){
+		GameObject power = (Instantiate(Resources.Load<GameObject>("PowerPrefab")) as GameObject);
+		power.transform.parent = stage.transform;
+		
+		Vector3 pos = stage.transform.position;
+		//pos.z = -1;
+		pos.x += Random.Range(-6.0f, 6.0f);
+		pos.y += Random.Range(1.0f, 3.0f);
+		
+		power.transform.position = pos;
+	}
+
+	void CreatePowerAry(GameObject stage, bool menual = false, float x = 0.0f, float y = 0.0f){
+		
+		Debug.Log("_currentPowerNum : " + _currentPowerNum);
+		
+		if(_currentPowerNum >= _powerAry.Length)
+			_currentPowerNum = 0;
+		
+		GameObject powerAry = _powerAry[_currentPowerNum];
+		if(powerAry == null)
+		{
+
+			// random
+			Debug.Log("_currentPowerNum : " + _currentPowerNum);
+
+			/*
+			//Create Power
+			for(int i = 0; i < 15; i++)
+				CreatePower(stage);
+			*/
+		} else {
+			GameObject power = Instantiate(powerAry) as GameObject;
+			
+			power.transform.parent = stage.transform;
+			
+			Vector3 pos = stage.transform.position;
+			pos.z = -1.0f;
+			if(menual == false) {
+				pos.x += Random.Range(-3.5f, 3.5f);
+				pos.y += Random.Range(0.8f, 1.8f);
+			} else {
+				pos.x = x;
+				pos.y = y;
+			}
+			
+			power.transform.position = pos;
+		}
+		
+		_currentPowerNum++;
 	}
 
 	//Coin
@@ -194,7 +273,7 @@ public class StageControl : MonoBehaviour {
 	//Coin Bundle
 	void CreateCoinBundle(GameObject stage, bool menual = false, float x = 0.0f, float y = 0.0f){
 
-		Debug.Log(_currentCoinBundle);
+		Debug.Log("_currentCoinBundle : " + _currentCoinBundle);
 
 		if(_currentCoinBundle >= _coinBundles.Length)
 			_currentCoinBundle = 0;
@@ -203,7 +282,7 @@ public class StageControl : MonoBehaviour {
 		if(bundle == null)
 		{
 			// random
-			Debug.Log(_currentCoinBundle);
+			Debug.Log("_currentCoinBundle : " + _currentCoinBundle);
 			//Create Coin
 			for(int i = 0; i < 15; i++)
 				CreateCoin(stage);
@@ -290,60 +369,40 @@ public class StageControl : MonoBehaviour {
 		_txt_coin.text = _coin + "coin";
 	}
 
+	//Plus Life
+	public void PlusLife()
+	{
+		_plusLife++;
+		Debug.Log ("_plusLife: " + _plusLife);
+	}
+
 	public void GameOver( )	
 	{
-		//speed
-		_speed = 0.0f;
-		_wallCtrl.WallScrollSpeed = 0.0f;
-
-		// JumpPower
-//		_corgiCtrl._JumpPower = 0;
-		_corgiCtrl._JumpPower = 5.0f;
-		// Jump Animation
-//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", false);
-//		_corgiCtrl._corgi.STATE = "STAY";
-
-		// Animation
-		if(_corgiCtrl._corgi.STATE == "RUN" || _corgiCtrl._corgi.STATE =="JUMP")
+		if( _plusLife < 0 )
 		{
-			_corgiCtrl._corgi.GetComponent<Animator>().SetBool("crash", true);
-			_corgiCtrl._corgi.STATE = "CRASH";
-			Debug.Log(_corgiCtrl._corgi.STATE);
+			//speed
+			_speed = 0.0f;
+			_wallCtrl.WallScrollSpeed = 0.0f;
+
+			// JumpPower
+	//		_corgiCtrl._JumpPower = 0;
+			_corgiCtrl._JumpPower = 5.0f;
+			// Jump Animation
+	//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", false);
+	//		_corgiCtrl._corgi.STATE = "STAY";
+
+			// Animation
+			if(_corgiCtrl._corgi.STATE == "RUN" || _corgiCtrl._corgi.STATE =="JUMP")
+			{
+				_corgiCtrl._corgi.GetComponent<Animator>().SetBool("crash", true);
+				_corgiCtrl._corgi.STATE = "CRASH";
+//				Debug.Log(_corgiCtrl._corgi.STATE);
+			}
+
+			StartCoroutine("AfterDelay");
+
+			_plusLife = 0;
 		}
-
-		StartCoroutine("AfterDelay");
-		/*
-		//text button
-		_gameoverBtn.SetActive(true);
-		_playagainBtn.SetActive(true);
-
-		//text
-		_txt_flew.text = "you flew: " + _txt_score.text;
-		_txt_collected_coin.text = "and collected: " + _txt_coin.text;
-
-		_txt_flew.gameObject.SetActive(true);
-		_txt_collected_coin.gameObject.SetActive(true);
-
-		//Black Out
-		_blackout.SetActive(true);
-
-		// Clear Coin
-		ClearCoin(_back);
-		ClearCoin(_center);
-		ClearCoin(_front);
-		// Clear Mon_p
-		ClearMon(_back);
-		ClearMon(_center);
-		ClearMon(_front);
-		// Clear Hurdle
-		ClearHurdle(_back);
-		ClearHurdle(_center);
-		ClearHurdle(_front);
-
-		//Audio
-		audio.clip = _game_over_es;
-		audio.Play();
-		*/
 	}
 
 	IEnumerator AfterDelay()
