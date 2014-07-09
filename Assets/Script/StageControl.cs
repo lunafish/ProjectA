@@ -23,7 +23,7 @@ public class StageControl : MonoBehaviour {
 	public int _currentPowerNum = 0;
 
 	// Plus Life
-	public int _plusLife = 0;			// *
+	private int _lifePlus = 0;			// *
 
 	//text
 	public tk2dTextMesh _txt_score;
@@ -369,16 +369,37 @@ public class StageControl : MonoBehaviour {
 		_txt_coin.text = _coin + "coin";
 	}
 
-	//Plus Life
-	public void PlusLife()
+	//Life Plus
+	public void LifePlus()
 	{
-		_plusLife++;
-		Debug.Log ("_plusLife: " + _plusLife);
+		_lifePlus++;
+		Debug.Log ("_lifePlus: " + _lifePlus);
+//		_corgiCtrl._corgi.STATE = "BUSTER";
+//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("buster", true);
+	}
+
+	//Life Minus
+	public void LifeMinus()
+	{
+		_lifePlus--;
+		Debug.Log ("_lifeMinus: " + _lifePlus);
+		/*
+		if(_lifePlus < 0)
+		{
+			_corgiCtrl._corgi.STATE = "CRASH";
+			_corgiCtrl._corgi.GetComponent<Animator>().SetBool("buster", false);
+		}else
+		{
+			if(_corgiCtrl._corgi.STATE == "BUSTER")
+				_corgiCtrl._corgi.STATE = "RUN";
+			_corgiCtrl._corgi.GetComponent<Animator>().SetBool("buster", false);
+		}
+		*/
 	}
 
 	public void GameOver( )	
 	{
-		if( _plusLife < 0 )
+		if( _lifePlus < 0 )
 		{
 			//speed
 			_speed = 0.0f;
@@ -391,6 +412,9 @@ public class StageControl : MonoBehaviour {
 	//		_corgiCtrl._corgi.GetComponent<Animator>().SetBool("jump", false);
 	//		_corgiCtrl._corgi.STATE = "STAY";
 
+			//
+			_corgiCtrl.ChangeBuster(false);
+
 			// Animation
 			if(_corgiCtrl._corgi.STATE == "RUN" || _corgiCtrl._corgi.STATE =="JUMP")
 			{
@@ -401,7 +425,7 @@ public class StageControl : MonoBehaviour {
 
 			StartCoroutine("AfterDelay");
 
-			_plusLife = 0;
+			_lifePlus = 0;
 		}
 	}
 

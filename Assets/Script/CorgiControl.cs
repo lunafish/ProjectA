@@ -17,6 +17,15 @@ public class CorgiControl : MonoBehaviour {
 		_corgi = _corgi_normal.GetComponent<CorgiCollision>();
 	}
 
+	public GameObject GetCurrentCorgi( ) {
+		if(_corgi_normal.activeSelf) {
+			return _corgi_normal;
+		}
+
+		return _corgi_buster;
+	}
+
+	// Buster Mode
 	public void ChangeBuster( bool isBuster ) {
 		// isBuster : true : buster mode
 		// isBUster : false : normal mode

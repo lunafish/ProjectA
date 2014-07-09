@@ -84,9 +84,8 @@ public class CorgiCollision : MonoBehaviour {
 			audio.clip = _mon_p_es;
 			audio.Play();
 
-			//Minus Life
-			_stageCtrl._plusLife--;			// *
-			Debug.Log("_stageCtrl._plusLife : " + _stageCtrl._plusLife);
+			//Life Minus
+			_stageCtrl.LifeMinus();			// *
 
 			// buster false
 			_corgiCtrl.ChangeBuster( false );
@@ -109,9 +108,11 @@ public class CorgiCollision : MonoBehaviour {
 			audio.clip = _mon_p_es;
 			audio.Play();
 
-			//Minus Life
-			_stageCtrl._plusLife--;			// *
-			Debug.Log("_stageCtrl._plusLife : " + _stageCtrl._plusLife);
+			//Life Minus
+			_stageCtrl.LifeMinus();			// *
+
+			// buster false
+			_corgiCtrl.ChangeBuster( false );
 
 			//Destroy Mon
 //			Destroy(other.gameObject);
@@ -153,7 +154,9 @@ public class CorgiCollision : MonoBehaviour {
 			
 			//Destroy Coin
 			Destroy(other.gameObject);
-			_stageCtrl.PlusLife();
+
+			//Life Plus
+			_stageCtrl.LifePlus();
 
 			// buster
 			_corgiCtrl.ChangeBuster( true );

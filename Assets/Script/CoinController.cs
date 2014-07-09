@@ -10,9 +10,10 @@ public class CoinController : MonoBehaviour {
 	
 	}
 
-	void Move () { // Coin 을 회전시키는 역할
-		Vector3 v = _corgi.transform.position - transform.parent.transform.position;
-		if(v.magnitude < 1.5f) {
+	void Move () { 
+		// Coin 흡수 효과 
+		Vector3 v = _corgi.GetComponent<CorgiControl>().GetCurrentCorgi().transform.position - transform.parent.transform.position;
+		if(v.magnitude < 1.4f) {
 			if(v.magnitude < 1.0f)
 			{
 				v.Normalize();
@@ -25,6 +26,7 @@ public class CoinController : MonoBehaviour {
 			}
 		}
 
+		// Coin 을 회전시키는 역할
 		this.transform.Rotate (0, 0, 4);		
 	}
 	
